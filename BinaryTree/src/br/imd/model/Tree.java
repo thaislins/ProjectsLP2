@@ -1,4 +1,6 @@
-package br.imd;
+package br.imd.model;
+
+import java.lang.NullPointerException;
 
 public class Tree {
 
@@ -32,6 +34,12 @@ public class Tree {
 
 	public void setRoot(Node root) {
 	        this.root = root;
+	}
+	
+	public int getHeight(Tree tree) {
+		if (root == null)
+			return 0;
+		return Math.max(getHeight(leftTree), getHeight(rightTree)) + 1;
 	}
 	
 	public void insertStudent(int id, String name) {
@@ -104,6 +112,22 @@ public class Tree {
 			postOrderRoute(tree.getLeftTree());
 			postOrderRoute(tree.getRightTree());
 			System.out.print(tree.getRoot().getStudent());
+		}
+	}
+	
+	public void remove(int id) {
+		if(search(id) == null) {
+			System.out.println("Value not found");
+		}
+		else {
+			this.root = search(id);
+			if(this.leftTree == null && this.rightTree == null){
+				this.root = null;
+			}
+			else if(this.rightTree != null && this.leftTree == null){
+				this.root = this.rightTree.root;
+				//this
+			}
 		}
 	}
 

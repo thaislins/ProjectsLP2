@@ -1,4 +1,4 @@
-package br.imd;
+package br.imd.model;
 
 public class Student {
 	

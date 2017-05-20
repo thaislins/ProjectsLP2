@@ -27,6 +27,7 @@ public class TreeGUI extends JFrame {
 	private HashMap<Node, Color> nodeColor;
 
 	public TreeGUI() {
+		//Creates a container inside the JFrame
 		Container ct = this.getContentPane();
 		ct.setLayout(null);
 
@@ -41,6 +42,7 @@ public class TreeGUI extends JFrame {
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+		//Creates labels,buttons, text fields and fonts
 		JLabel lblTraversals = new JLabel("Traversals");
 		JLabel lblStudent = new JLabel("Student");
 		JLabel lblName = new JLabel("Name:");
@@ -53,7 +55,6 @@ public class TreeGUI extends JFrame {
 		JButton btnRemove = new JButton("Remove");
 		JTextField nameText = new JTextField();
 		JTextField idText = new JTextField();
-
 		Font fontTitles = new Font("Sans Serif", Font.BOLD, 14);
 		Font fontBody = new Font("Sans Serif", Font.PLAIN, 12);
 
@@ -96,6 +97,8 @@ public class TreeGUI extends JFrame {
 		ct.add(btnRemove);
 		ct.add(nameText);
 		ct.add(idText);
+		
+		//Button calls
 
 		btnInsert.addActionListener(new ActionListener() {
 			@Override
@@ -118,14 +121,11 @@ public class TreeGUI extends JFrame {
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = nameText.getText();
-				String idstr = idText.getText();
+				String idstr = idText.getText();				
 				int id = Integer.valueOf(idstr);
 				idText.setText("");
 				nameText.setText("");
 				
-				if(name != "" && idstr != "") {
-					System.out.println("Only the id value was considered in the search");
-				}
 
 				Thread t = new Thread(new Runnable() {
 					@Override
@@ -155,14 +155,11 @@ public class TreeGUI extends JFrame {
 		btnRemove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = nameText.getText();
-				String idstr = idText.getText();
+				String idstr = idText.getText();				
 				int id = Integer.valueOf(idstr);
 				idText.setText("");
 				nameText.setText("");
 				
-				if(name != "" && idstr != "") {
-					System.out.println("Only the id value was considered in the removal");
-				}
 				
 				Thread t = new Thread(new Runnable() {
 					@Override
@@ -170,12 +167,10 @@ public class TreeGUI extends JFrame {
 						if (tree == null)
 							return;
 						tree.remove(id);
-						System.out.println("Removing value");
 						pause();
 						ct.repaint();
 						pause();
 						repaint();
-						System.out.println("Value removed and tree updated");
 					}
 				});
 				t.start();
@@ -240,11 +235,13 @@ public class TreeGUI extends JFrame {
 		});
 	}
 
+	//Sets Tree
 	public void setTree(Tree tree) {
 		this.tree = tree;
 	}
 
-	@Override
+	/* Defines what will be printed on JFrame
+	 */ 
 	public void paint(Graphics g) {
 		rootX = frameSize / 2 - nodeSize;
 		rootY = 40;
@@ -252,6 +249,8 @@ public class TreeGUI extends JFrame {
 		printTree(tree, g);
 	}
 
+	/* Prints tree in JFrame
+	 */ 
 	public void printTree(Tree tree, Graphics g) {
 		if (tree == null || tree.getRoot() == null)
 			return;
@@ -267,7 +266,6 @@ public class TreeGUI extends JFrame {
 		}
 
 		g.drawOval(rootX, rootY, nodeSize, nodeSize);
-
 		g.setColor(Color.black);
 		g.drawString(root.toString(), rootX + (nodeSize - 10) / 2, rootY + (nodeSize + 10) / 2);
 
@@ -286,14 +284,20 @@ public class TreeGUI extends JFrame {
 		}
 	}
 
+	/* Outlines node in red to show it's selected
+	 */ 
 	public void highlightNode(Node node) {
 		nodeColor.put(node, Color.red);
 	}
 
+	/* Removes red outline from node to show it's deselected
+	 */ 
 	public void unhighlightNode(Node node) {
 		nodeColor.remove(node);
 	}
 
+	/* Draws Line that connects a node to it's left son
+	 */ 
 	public void drawLineLeft(Graphics g, int X, int Y) {
 		rootX = X - (nodeSize + nodeGap); // * deslocFactor;
 		rootY = Y + (nodeSize + nodeGap);
@@ -301,6 +305,8 @@ public class TreeGUI extends JFrame {
 		g.drawLine(X, Y + nodeSize, rootX + nodeSize, rootY);
 	}
 
+	/* Draws Line that connects a node to it's right son
+	 */ 
 	public void drawLineRight(Graphics g, int X, int Y) {
 		rootX = X + (nodeSize + nodeGap); // * deslocFactor;
 		rootY = Y + (nodeSize + nodeGap);
@@ -308,10 +314,14 @@ public class TreeGUI extends JFrame {
 		g.drawLine(X + nodeSize, Y + nodeSize, rootX, rootY);
 	}
 
+	/* Overwrites pause and calls it again with determined value
+	 */ 
 	public void pause() {
 		pause(1500);
 	}
 
+	/* Receives a value that determines how long thread will sleep
+	 */ 
 	public void pause(int value) {
 		try {
 			Thread.sleep(value);
@@ -320,6 +330,10 @@ public class TreeGUI extends JFrame {
 		}
 	}
 
+	/* Highlights Node in Pre-Order
+	 * The tree is traversed and the visited node is highlighted
+	 * for a few moments and is unhighlighted as the next node is visited
+	 */ 
 	public void preOrderTraversalGUI(Tree tree) {
 		if (tree != null) {
 			highlightNode(tree.getRoot());
@@ -332,6 +346,10 @@ public class TreeGUI extends JFrame {
 		}
 	}
 
+	/* Highlights Node in In-Order
+	 * The tree is traversed and the visited node is highlighted
+	 * for a few moments and is unhighlighted as the next node is visited
+	 */ 
 	public void inOrderTraversalGUI(Tree tree) {
 		if (tree != null) {
 			inOrderTraversalGUI(tree.getLeftTree());
@@ -344,6 +362,10 @@ public class TreeGUI extends JFrame {
 		}
 	}
 
+	/* Highlights Node in Post-Order
+	 * The tree is traversed and the visited node is highlighted
+	 * for a few moments and is unhighlighted as the next node is visited
+	 */ 
 	public void postOrderTraversalGUI(Tree tree) {
 		if (tree != null) {
 			postOrderTraversalGUI(tree.getLeftTree());

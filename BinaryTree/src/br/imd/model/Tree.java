@@ -10,9 +10,11 @@ public class Tree {
 	private Tree rightTree;
 
 	public Tree() {
-		// construtor vazio
+		
 	}
 
+	//Getters and Setters
+	
 	public Tree getRightTree() {
 		return rightTree;
 	}
@@ -37,18 +39,28 @@ public class Tree {
 		this.root = root;
 	}
 
+	/* Returns height of the tree
+	 */ 
 	public int getHeight(Tree tree) {
 		if (tree == null)
 			return 0;
 		return Math.max(getHeight(tree.getLeftTree()), getHeight(tree.getRightTree())) + 1;
 	}
 
+	/* Inserts Student in the tree
+	 * A new Student object is created and inserted into a node,
+	 * which is then inserted into the tree through the method "insert"
+	 */ 
 	public void insertStudent(int id, String name) {
 		Student student = new Student(id, name);
 		Node node = new Node(student);
 		insert(node);
 	}
 
+	/* Inserts a Node in the tree
+	 * If the Node's id is bigger than it's root, then the value
+	 * is inserted on the right, if not it's inserted on the left
+	 */ 
 	private void insert(Node node) {
 		if (this.root == null) {
 			this.root = node;
@@ -69,6 +81,10 @@ public class Tree {
 
 	}
 
+	/* Searches for a value inside the tree
+	 * If value is found then the root is returned,
+	 * if not an exception is thrown
+	 */
 	public Node search(int id) throws NullPointerException {
 		if (root == null) {
 			throw new NullPointerException();
@@ -83,6 +99,8 @@ public class Tree {
 		}
 	}
 
+	/* Traverses tree in Pre-order
+	 */ 
 	public void preOrderTraversal(Tree tree) {
 		if (tree != null) {
 			System.out.print(tree.getRoot().getStudent());
@@ -90,7 +108,9 @@ public class Tree {
 			preOrderTraversal(tree.getRightTree());
 		}
 	}
-
+	
+	/* Traverses tree in In-order
+	 */ 
 	public void inOrderTraversal(Tree tree) {
 		if (tree != null) {
 			inOrderTraversal(tree.getLeftTree());
@@ -99,6 +119,8 @@ public class Tree {
 		}
 	}
 
+	/* Traverses tree in Post-order
+	 */ 
 	public void postOrderTraversal(Tree tree) {
 		if (tree != null) {
 			postOrderTraversal(tree.getLeftTree());
@@ -107,8 +129,14 @@ public class Tree {
 		}
 	}
 
+	/* Removes Node from tree
+	 * The Node to be removed is determined by the student's id
+	 * If the value is removed, then the method returns true,
+	 * if not it returns false
+	 */
 	public boolean remove(int id) {
 		if (this.root == null) {
+			System.out.println("Value not found");
 			return false;
 		}
 		if (this.root.getStudent().getId() == id) {
@@ -118,25 +146,26 @@ public class Tree {
 				this.root = this.leftTree.root;
 				this.rightTree = this.leftTree.rightTree;
 				this.leftTree = this.leftTree.leftTree;
-			} else if (this.leftTree == null && this.rightTree != null) {
+			} else if (this.rightTree != null && this.leftTree == null) {
 				this.root = this.rightTree.root;
 				this.leftTree = this.rightTree.leftTree;
 				this.rightTree = this.rightTree.rightTree;
 			} else {
-				Tree ant = this;
-				Tree atual = this.leftTree;
-				while (atual.rightTree != null) {
-					ant = atual;
-					atual = atual.rightTree;
+				Tree old = this;
+				Tree curr = this.leftTree;
+				while (curr.rightTree != null) {
+					old = curr;
+					curr = curr.rightTree;
 				}
-				this.root = atual.root;
-				if (ant == this) {
-					this.leftTree = atual.leftTree;
+				this.root = curr.root;
+				if (old == this) {
+					this.leftTree = curr.leftTree;
 				} else {
-					ant.rightTree = atual.leftTree;
+					old.rightTree = curr.leftTree;
 				}
 			}
-			return true;
+				System.out.println("Value removed");
+				return true;
 		}
 		Tree old = null;
 		Tree curr = this;
@@ -151,6 +180,7 @@ public class Tree {
 		}
 
 		if (curr == null) {
+			System.out.println("Value not found");
 			return false;
 		}
 
@@ -186,6 +216,7 @@ public class Tree {
 				old2.rightTree = curr2.leftTree;
 			}
 		}
+		System.out.println("Value removed");
 		return true;
 	}
 }

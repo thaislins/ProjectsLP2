@@ -9,8 +9,7 @@ public class Simulation {
 		TreeGUI t = new TreeGUI();
 		t.setTree(tree1);
 		t.pause(200);
-		t.repaint();
-
+		
 		tree1.insertStudent(4, "N");
 		tree1.insertStudent(2, "S");
 		tree1.insertStudent(5, "J");
